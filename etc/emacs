@@ -1,0 +1,293 @@
+;; -*-emacs-lisp-*-
+
+;;
+;; My .emacs:
+;; Alvaro Lopez Ortega <alvaro@alobbs.com>
+;;
+
+;; Modified and Composed from:
+;; 
+;; Gunnar Wolf <gwolf@gwolf.org>
+;; Alvaro Lopez <alvaro@gnu.org>
+;; K. Arun <kar@myrealbox.com>
+;; Chema Celorio <chema@celorio.com>
+;; Miguel de Icaza <miguel@helixcode.com>
+;; Mattias Nyrell 199911
+;; ..
+
+;; My info
+;;
+(setq user-full-name "Luis Octavio Ramirez Fernandez")
+(setq user-mail-address "lramirez88mx@gmail.com")
+
+;; Set the short-cut keys
+;;
+(define-key global-map [f1]  (lambda () 
+						  (interactive) 
+						  (manual-entry (current-word))))  ;; Help
+(define-key global-map [f2]  'find-file)                         ;; Open
+(define-key global-map [f3]  'kill-buffer-fast)                  ;; Close
+(define-key global-map [f4]  'goto-line)                         ;; Goto line
+(define-key global-map [f5]  'other-window)
+(define-key global-map [f7]  'replace-string)                    ;; Replace
+(define-key global-map [f9]  'undo)                              ;; Undo
+(define-key global-map [f10] 'compile)                           ;; Compile
+(define-key global-map [f11] 'next-error)                        ;; Error
+(define-key global-map [f12] 'add-change-log-entry-other-window) ;; Changelog
+
+;; Fix 'home' and 'end' keys
+;;
+( global-set-key [home] 'beginning-of-line)
+( global-set-key [end] 'end-of-line)
+
+;; Set Meta +  P to next error
+;;
+( global-set-key "\M-p" 'next-error) 
+
+;; yes -> y, no -> n
+;;
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Make control+pageup/down scroll the other buffer
+;;
+(global-set-key [C-next]  'scroll-other-window)
+(global-set-key [C-prior] 'scroll-other-window-down)
+
+;; Dont show the GNU splash screen
+;;
+(setq inhibit-startup-message t)
+
+;; Make all "yes or no" prompts show "y or n" instead
+;;
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Paste at point NOT at cursor
+;;
+(setq mouse-yank-at-point 't)
+
+;; Open unidentified files in text mode
+;;
+(setq default-major-mode 'text-mode)
+
+;; Windows-like selection
+;; 
+(pc-selection-mode)
+
+;; Automagically read compressed files
+;;
+(auto-compression-mode 1)
+
+;; Display clock 
+;;
+(display-time)
+
+;; Auto fill in all major modes
+;;
+;; (setq-default auto-fill-function 'do-auto-fill) 
+
+;; Compile command line to use :
+;;
+(setq compile-command "make CFLAGS=\"-O0 -g3 -Wall\" -j3")
+
+;; over the filesystem.
+;;
+(defun make-backup-file-name (file-name)
+  "Create the non-numeric backup file name for `file-name'."
+  (require 'dired)
+  (if (file-exists-p "~/.backups")
+      (concat (expand-file-name "~/.backups/")
+	            (dired-replace-in-string "/" "|" file-name))
+    (concat file-name "~")))
+
+;; tab, colour, and misc options
+;;
+(custom-set-variables
+ '(compilation-window-height 6 t)
+ '(c-default-style "K&R")
+ '(line-number-mode t)
+ '(font-lock-maximum-decoration t)
+ '(c-progress-interval 8)
+ '(auto-revert-stop-on-user-input nil)
+ '(compilation-scroll-output t)
+ '(tab-width 5)
+ '(compilation-ask-about-save nil t)
+ '(c-basic-offset 8)
+ '(c-tab-always-indent (quote other))
+ '(font-lock-support-mode (quote jit-lock-mode))
+ '(delete-old-versions t)
+ '(standard-indent 8)
+ '(auto-revert-interval 2)
+ '(column-number-mode t)
+ '(indent-tabs-mode t)
+ '(next-line-add-newlines nil)
+ '(global-font-lock-mode t nil (font-lock))
+ '(global-auto-revert-mode t nil (autorevert))
+ '(font-lock-global-modes t))
+
+;; disable line split
+(setq fill-column nil)
+
+;; disable any noice
+;;
+(setq bell-volume 0)
+(setq visible-bell t)
+
+;; hide the menu bar
+;;
+(menu-bar-mode nil)
+(tool-bar-mode -1)
+;;(tool-bar-mode nil)
+(setq menubar-visible-p nil)
+(setq default-toolbar-visible-p nil)
+
+;; hide the scroll bar
+;;
+;;(scroll-bar-mode nil)
+
+;; Useful function:
+;; convert dos (^M) end of line to unix end of line
+(defun dos2unix()
+  (interactive)
+  (goto-char(point-min))
+  (while (search-forward "\r" nil t) (replace-match "")))
+
+;; Useful function:
+;; unix2dos
+(defun unix2dos()
+  (interactive)
+  (goto-char(point-min))
+  (while (search-forward "\n" nil t) (replace-match "\r\n")))
+
+;; Useful function:
+;; Insert date into buffer
+(defun insert-date ()
+  "Insert date at point."
+  (interactive)
+  (insert (format-time-string "%A, %B %e, %Y %k:%M:%S %z")))
+
+;; Useful function:
+;; Compute the length of the marked region 
+(defun region-length ()
+  "length of a region"
+  (interactive)
+  (message (format "%d" (- (region-end) (region-beginning)))))
+
+;; Active the mouse wheel:
+;; Add scrolling with mouse
+(mouse-wheel-mode)
+(global-set-key   [mouse-4] '(lambda () (interactive) (scroll-down 5)))
+(global-set-key   [mouse-5] '(lambda () (interactive) (scroll-up   5)))
+(global-set-key [S-mouse-4] '(lambda () (interactive) (scroll-down 1)))
+(global-set-key [S-mouse-5] '(lambda () (interactive) (scroll-up   1)))
+(global-set-key [C-mouse-5] '(lambda () (interactive) (scroll-up   (/ (window-height) 2))))
+(global-set-key [C-mouse-4] '(lambda () (interactive) (scroll-down (/ (window-height) 2))))
+
+;; Spell program
+;;
+;(setq default ispell-program-name "aspell")
+
+;; Aquamacs (Emacs for OS X)
+;;
+(when (featurep 'aquamacs)
+  ;; L&F
+  (setq default-frame-alist '(
+    ;;(font "-apple-monaco*-medium-r-normal--12-*-*-*-*-*-fontset-monaco12")
+    (cursor-color . "red")
+    (cursor-type . box)
+    (foreground-color . "lightcyan")
+    (background-color . "#001125")
+  ))
+
+  ;; Behave as on Linux
+  ;;(cua-mode 0)
+  ;;(one-buffer-one-frame-mode 0)
+
+  ;; Mouse
+  (setq mac-emulate-three-button-mouse nil)
+  (global-set-key [wheel-up]'(lambda ()(interactive)(scroll-down 2)))
+  (global-set-key [wheel-down]'(lambda ()(interactive)(scroll-up 2)))
+  (setq mouse-wheel-scroll-amount '(2.1))
+)
+
+;; Agregados personales
+;; C sharp
+
+(add-to-list 'load-path (expand-file-name "~/site-lisp"))
+(autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
+(setq auto-mode-alist 
+(append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
+
+
+;; PHP-Mode
+(require 'php-mode)
+(add-hook 'php-mode-user-hook 'turn-on-font-lock)
+                                          
+
+;; CSS-Mode
+(autoload 'css-mode "css-mode")                                               
+(setq auto-mode-alist
+      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+
+
+;;Sweet Sweet javascript mode
+(add-hook 'javascript-mode-hook 'js-mode)
+(autoload 'js-mode "js-mode" nil t)
+
+
+;; Desktop
+;; Esta es una funcionalidad del Emacs que es de lo más útil que se
+;; puede encontrar. Llevas horas programando, compilando, depurando y
+;; tienes los ojos rojos de tanto mirar la pantalla. Decides que ya
+;; está bien, que mañana seguirás. Llega el día siguiente y ... donde
+;; estabas?. Con el siguiente fragmento de código instalado en tu
+;; fichero .emacs no hace falta que te acuerdes, Emacs lo hace por
+;; ti. También recordará los últimos 100 ficheros visitados, los
+;; últimos 50 comandos usados en la shell o las últimas 20
+;; expresiones regulares usadas.
+(when (fboundp 'desktop-load-default)
+  (desktop-load-default)
+  (mapcar
+   (lambda (sym) (add-to-list 'desktop-globals-to-save sym))
+   '((buffer-name-history      . 20)
+     (dired-regexp-history     . 20)
+     (extended-command-history . 30)
+     (file-name-history        . 100)
+     (grep-history             . 30)
+     (minibuffer-history       . 50)
+     (query-replace-history    . 60)
+     (read-expression-history  . 60)
+     (regexp-history           . 60)
+     (regexp-search-ring       . 20)
+     (search-ring              . 20)
+     (shell-command-history    . 50)))
+  (desktop-read))
+
+;; Lua sintax
+(add-to-list 'load-path (expand-file-name "~/site-lisp"))
+(setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+(add-hook 'lua-mode-hook 'turn-on-font-lock)
+(add-hook 'lua-mode-hook 'hs-minor-mode)
+
+;; Theme color para emacs
+;;
+(require 'color-theme)
+(color-theme-initialize)
+(load-file "~/site-lisp/themes/color-theme-irblack.el")
+(color-theme-irblack)
+
+;; Funciones de emacs con mac osx
+(require 'redo+)
+(require 'mac-key-mode)
+(mac-key-mode 1)
+
+;; Android on emacs
+(add-to-list 'load-path "~/site-lisp/android-mode")
+	    (require 'android-mode)
+	    (setq android-mode-sdk-dir "~/Developer/android-sdk-mac_x86")
+	    (add-hook 'gud-mode-hook
+            (lambda ()
+            (add-to-list 'gud-jdb-classpath "/Users/lramirez/Developer/android-sdk-mac_x86/platforms/android-8/android.jar")
+            ))

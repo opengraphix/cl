@@ -155,6 +155,7 @@ source ~/cl/bin/bashmarks.sh
 export EDITOR='vim'  #Command line
 export GIT_EDITOR='vim'
 alias gvim='/Applications/MacVim.app/Contents/MacOS/vim -g'
+alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
 
 if [ "$OS" = "darwin" ] ; then
   alias v=mvim

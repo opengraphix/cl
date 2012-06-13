@@ -25,6 +25,10 @@ else
   link ~/cl/etc/vim/gvimrc ~/.gvimrc
   link ~/cl/etc/vim ~/.vim
 
+  #emacs
+  link ~/cl/etc/emacs ~/.emacs
+  link ~/cl/etc/site-lisp ~/site-lisp
+
   # git
   link ~/cl/etc/gitconfig ~/.gitconfig
   link ~/cl/etc/gitignore ~/.gitignore
