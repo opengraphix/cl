@@ -35,6 +35,8 @@ else
   link ~/cl/etc/autotest ~/.autotest
   link ~/cl/etc/irbrc ~/.irbrc
   link ~/cl/etc/ssh_config ~/.ssh/config
+  link ~/cl/etc/screenrc ~/.screenrc
+  link ~/cl/etc/xmodmap ~/.xmodmap
 
   source ~/.bash_profile
 

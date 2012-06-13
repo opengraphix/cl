@@ -1,0 +1,35 @@
+# utilizar campana visual
+vbell on
+# reemplazar ctrl-A por ctrl-O
+#escape ^Oo
+# configurar un búfer grande para paginación
+defscrollback 5000
+
+term screen-256color
+startup_message off
+
+# configurar el texto en la línea inferior de la pantalla
+#caption always "%{= kw}%-w%{= gW}%n %t%{-}%+w %-= @%H - %LD %d %LM - %c"
+caption always "%{= kw}%-Lw%{= gW}%50> %n%f* %t %{-}%+Lw%< %= %H %l - %0c:%s - %d/%m %{-}"
+#caption always "%{= KW}%-w%{= gW}%n %t%{-}%+w %-="
+#hardstatus alwayslastline "%{= kW} %-= %{= kB}Session:%u%{= kW} %4` | %{= kB}Host:%{= kW} %H | %1` |%{= kB} MEM:%{= kW} %2` /%{= kB} SW: %{= kW}%3`MB | %m/%d %c"
+
+
+
+#Backticks to display information in status bar
+#backtick 1 60 60 /Users/opengraphix/bin/get_uptime.sh
+#backtick 2 60 60 /Users/opengraphix/bin/get_freemem.sh
+#backtick 3 60 60 /Users/opengraphix/bin/get_freeswap
+#backtick 4 60 60 /Users/opengraphix/bin/get_sessionname.sh
+
+# Terminales virtuales
+#
+#screen -t root 0 sudo -s
+screen -t shell 1 bash
+screen -t shell 2 bash
+screen -t shell 3 bash
+screen -t shell 4 bash
+screen -t shell 5 bash
+screen -t shell 6  bash
+screen -t shell 7  bash
+select 1

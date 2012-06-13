@@ -11,7 +11,7 @@ export PLATFORM="$MACHINE-$OS-$OSVERSION"
 
 # Path ------------------------------------------------------------
 if [ "$OS" = "darwin" ] ; then
-  export PATH=/opt/local/bin:/opt/local/sbin:$PATH  # OS-X Specific, with MacPorts and MySQL installed
+  export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/mysql/bin:~/Developer/android-sdk-mac_x86/tools:~/Developer/android-sdk-mac_x86/platform-tools:$PATH  # OS-X Specific, with MacPorts and MySQL installed
   #export PATH=/opt/local/bin:/opt/local/sbin:$PATH  # OS-X Specific, with MacPorts installed
 fi
 
@@ -50,3 +50,29 @@ echo -ne "Server time is: "; date
 # in this order:
 #     bashrc
 #     .bashrc
+
+## DRQUEUE ENV #
+## Lauch Daemon
+# master.Darwin.i386 -o
+
+export DRQUEUE_ROOT=/usr/local/drqueue
+export DRQUEUE_MASTER=127.0.0.1
+export PATH=$PATH:$DRQUEUE_ROOT/bin
+##############################
+
+##
+# Your previous /Users/lramirez/.bash_profile file was backed up as /Users/lramirez/.bash_profile.macports-saved_2011-07-22_at_13:46:08
+##
+
+# MacPorts Installer addition on 2011-07-22_at_13:46:08: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+exec screen
+########
+
+#GTK para OSX 
+export PATH=/Library/Frameworks/GTK+.framework/Resources/bin:$PATH
+
+#GIT for OSX 
+export PATH=/usr/local/git/bin:$PATH 

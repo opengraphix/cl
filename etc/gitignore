@@ -2,4 +2,8 @@
 .svn
 *.sw?
 .netrwhist
+tmp
+.DS_Store
+*~
+build/
 .DS_Store

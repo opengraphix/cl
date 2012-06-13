@@ -154,7 +154,7 @@ source ~/cl/bin/bashmarks.sh
 #export EDITOR='gedit'  #Linux/gnome
 export EDITOR='vim'  #Command line
 export GIT_EDITOR='vim'
-#alias gvim='/Applications/MacVim.app/Contents/MacOS/vim -g'
+alias gvim='/Applications/MacVim.app/Contents/MacOS/vim -g'
 
 if [ "$OS" = "darwin" ] ; then
   alias v=mvim
@@ -183,13 +183,6 @@ findportuser() {
     lsof -i :"$1"
 }
 
-findhosts(){
-  nmap -sP -n -oG - "$1"/24 | grep "Up" | awk '{print $2}' -
-  echo "To scan those do: nmap $1-254" 
-  echo "To scan and OS detect those do: sudo nmap -O $1-254" 
-  echo "To intensly scan one do: sudo nmap -sV -vv -PN $1"
-}
-
 monitor_traffic(){
   # install ngrep with sudo port install ngrep
   sudo ngrep -W byline -qld en1 "$1" 
@@ -197,11 +190,12 @@ monitor_traffic(){
 
 
 
-
 # Other aliases ----------------------------------------------------
 alias ll='ls -hl'
 alias la='ls -a'
 alias lla='ls -lah'
+alias l='ls -G'
+alias cls='clear'
 
 # Search
 # Use ack for grepping and find if ack is available
@@ -213,15 +207,12 @@ if type -P ack &>/dev/null ; then
   gw(){
     ack "$*" --all-types --color-match=green --color-filename=blue --word-regexp --smart-case
   }
-  gnolog(){
-    ack "$*" --all-types --ignore-dir=log --color-match=green --color-filename=blue --smart-case
-  }
   f(){
     ack -i -g ".*$*[^\/]*$" | highlight blue ".*/" green "$*[^/]"
   }
 else
   g(){
-    grep -Rin $1 *
+    grep -Ri $1 *
   }
   f(){
     find . -iname "$1"
@@ -266,20 +257,6 @@ killhard() {
 
 
 
-# Ruby ----------------------------------------------------
-
-# RVM
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" 
-
-# Fixes problems with sending email in ruby
-export RUBYOPT="-r openssl"
-
-# Spin: gem install spin
-alias spin="spin serve -Itest | highlight red ' [1-9]0* failures' purple '[_a-zA-Z0-9]*\.rb.[0-9]*' red 'Error:' red 'Failure:' red ' [1-9]0* errors' green ' 0 errors' green ' 0 failures'"
-alias spin_kicker="kicker -r rails -b 'spin push'"
-
-
-
 # Bring in the other files ----------------------------------------------------
 if [ $IS_INTERACTIVE = 'true' ] ; then
   source ~/.bashrc_help
@@ -302,3 +279,28 @@ fi
 #elif
 #else
 #fi
+
+# Auto login screen --------------------------------------------------------------
+# Login greeting ------------------
+if [ "$TERM" = "screen" -a ! "$SHOWED_SCREEN_MESSAGE" = "true" ]; then
+  detached_screens=`screen -list | grep Detached`
+  if [ ! -z "$detached_screens" ]; then
+    echo "+---------------------------------------+"
+    echo "| Detached screens are available:       |"
+    echo "$detached_screens"
+    echo "+---------------------------------------+"
+  else
+    echo "[ screen is activated ]"
+  fi
+  export SHOWED_SCREEN_MESSAGE="true"
+fi
+
+# Print working directory after a cd. -----------------------------------------
+cd() {
+      if [[ $@ == '-' ]]; then
+          builtin cd "$@" > /dev/null  # We'll handle pwd.
+      else
+          builtin cd "$@"
+      fi
+          echo -e "   \033[1;30m"`pwd`"\033[0m"
+}

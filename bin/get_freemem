@@ -1,0 +1,8 @@
+#!/bin/bash
+#Linux
+#free -m | grep - | awk '{print $4}'
+
+#OSX
+#system_profiler | grep "  Memory:"
+
+system_profiler SPHardwareDataType | grep Memory

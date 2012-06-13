@@ -1,0 +1,12 @@
+[color]
+	branch = auto
+	status = auto
+	diff = auto
+[core]
+	quotepath = false
+	excludesfile = /Users/lramirez/.gitignore
+[user]
+	name = Luis Ramirez
+	email = lramirez@opengraphix.com.mx
+[gui]
+	recentrepo = /Users/lramirez/Developer/esferitaApps
